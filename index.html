@@ -1,0 +1,1279 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Beijingren · 青年文刊</title>
+    <!-- Font Awesome 图标库 (仅用于导航图标) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ----- 全局重置 ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Times New Roman', 'SimSun', '宋体', 'Songti SC', serif;
+            background-color: #f8f5f0;
+            color: #1e1e1e;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== 导航栏 ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            transition: background 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
+            background: transparent;
+            box-shadow: none;
+        }
+        .navbar.scrolled {
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid #eee8e0;
+        }
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #ffffff;
+            transition: color 0.4s ease;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+        .navbar.scrolled .logo {
+            color: #1e1e1e;
+            text-shadow: none;
+        }
+        .logo span {
+            color: #c0392b;
+        }
+        .navbar.scrolled .logo span {
+            color: #b42b2b;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .nav-links a {
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+        .navbar.scrolled .nav-links a {
+            color: #2c2c2c;
+            text-shadow: none;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            border-bottom-color: #c0392b;
+            color: #ffffff;
+        }
+        .navbar.scrolled .nav-links a:hover,
+        .navbar.scrolled .nav-links a.active {
+            border-bottom-color: #b42b2b;
+            color: #b42b2b;
+        }
+
+        /* ===== 页面内容区域 ===== */
+        .page-section {
+            display: none;
+            padding-top: 80px;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        /* ============================================================ */
+        /* ===== 首页 · 三屏设计 ===== */
+        /* ============================================================ */
+        #page-home {
+            padding-top: 0;
+        }
+
+        .hero-fullscreen {
+            height: 100vh;
+            width: 100%;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-fullscreen .brand-title {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: clamp(4rem, 14vw, 10rem);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.06em;
+            text-align: center;
+            line-height: 1.1;
+            padding: 0 20px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            user-select: none;
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            right: 48px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.6rem;
+            animation: floatArrow 2.4s ease-in-out infinite;
+            cursor: pointer;
+            transition: color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        .scroll-hint:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .scroll-hint span {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+        @keyframes floatArrow {
+            0% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(10px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+        }
+
+        .about-section {
+            min-height: 100vh;
+            background: #f8f5f0;
+            display: flex;
+            align-items: center;
+            padding: 80px 0;
+        }
+        .about-section .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .about-text {
+            position: relative;
+            padding: 20px 0;
+            font-size: 1.05rem;
+            line-height: 2;
+            color: #2c2c2c;
+            z-index: 1;
+        }
+        .about-text .big-quote {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 300px;
+            color: rgba(0, 0, 0, 0.06);
+            line-height: 1;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+        }
+        .about-text .text-content {
+            position: relative;
+            z-index: 1;
+        }
+        .about-text .text-content p {
+            margin-bottom: 1.2em;
+            text-indent: 2em;
+        }
+        .about-text .text-content p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .about-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .about-image .img-wrapper {
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 3 / 5;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.10);
+            background: #ddd5cb;
+        }
+        .about-image .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .quote-section {
+            padding: 80px 0 100px;
+            background: #f8f5f0;
+        }
+        .quote-section .quote-box {
+            max-width: 860px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 48px 56px;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid #efebe6;
+            font-size: 1.08rem;
+            line-height: 2;
+            color: #2c2c2c;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .quote-section .quote-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+        }
+        .quote-section .quote-box .quote-mark {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 3.6rem;
+            color: #b42b2b;
+            opacity: 0.25;
+            line-height: 1;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .quote-section .quote-box p {
+            text-indent: 2em;
+        }
+        .quote-section .quote-box p:first-of-type {
+            text-indent: 0;
+        }
+        .quote-section .quote-box .quote-source {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 0.95rem;
+            color: #7a6e62;
+            text-indent: 0;
+            border-top: 1px solid #eee8e0;
+            padding-top: 16px;
+        }
+
+        .quote-footer-img {
+            display: flex;
+            justify-content: center;
+            margin-top: 64px;
+        }
+        .quote-footer-img .img-wrapper {
+            width: 360px;
+            max-width: 100%;
+            aspect-ratio: 5 / 3;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            background: #ddd5cb;
+            transition: transform 0.3s ease;
+        }
+        .quote-footer-img .img-wrapper:hover {
+            transform: scale(1.02);
+        }
+        .quote-footer-img .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ============================================================ */
+        /* ===== 读者评语 · 四列瀑布流 纸条风格 ===== */
+        /* ============================================================ */
+        .reviews-section {
+            padding: 40px 0 80px;
+            background: #f8f5f0;
+        }
+        .reviews-section .section-title {
+            font-size: 2.2rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .reviews-section .section-sub {
+            color: #5e5e5e;
+            margin-bottom: 36px;
+            font-size: 1.05rem;
+        }
+
+        /* 四列瀑布流 — 使用 CSS columns */
+        .reviews-masonry {
+            column-count: 4;
+            column-gap: 24px;
+            width: 100%;
+        }
+
+        /* 每个纸条 — 独立卡片，瀑布流自动排列 */
+        .review-note {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px 22px 22px 22px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid #efebe6;
+            margin-bottom: 24px;
+            break-inside: avoid;
+            page-break-inside: avoid;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            max-height: 340px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .review-note:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07);
+        }
+
+        .review-note .review-author {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #b42b2b;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid #f0ebe4;
+            padding-bottom: 6px;
+        }
+        .review-note .review-author .school {
+            font-weight: 400;
+            color: #7a6e62;
+            font-size: 0.85rem;
+            margin-left: 4px;
+        }
+
+        .review-note .review-content {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #2c2c2c;
+            flex: 1;
+            overflow: hidden;
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+        }
+
+        .review-note .note-fade {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 48px;
+            background: linear-gradient(to bottom, transparent, #ffffff);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .review-note.is-long .note-fade {
+            opacity: 1;
+        }
+
+        /* 点击弹窗 (模态框) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            backdrop-filter: blur(4px);
+            animation: modalFadeIn 0.25s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        @keyframes modalFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: 24px;
+            max-width: 560px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 36px 40px 40px 40px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15);
+            position: relative;
+            border: 1px solid #eee8e0;
+        }
+        .modal-box .modal-author {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #b42b2b;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #f0ebe4;
+            padding-bottom: 8px;
+        }
+        .modal-box .modal-author .school {
+            font-weight: 400;
+            color: #7a6e62;
+            font-size: 0.95rem;
+            margin-left: 6px;
+        }
+        .modal-box .modal-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #2c2c2c;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .modal-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #8a7e72;
+            cursor: pointer;
+            padding: 4px 8px;
+            line-height: 1;
+            transition: color 0.2s;
+            margin-top: -8px;
+            margin-right: -8px;
+        }
+        .modal-close:hover {
+            color: #b42b2b;
+        }
+
+        /* 其他页面（往期作品、投稿）保持原有样式 */
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .section-sub {
+            color: #5e5e5e;
+            margin-bottom: 36px;
+            font-size: 1.05rem;
+        }
+        .folder-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 36px 28px;
+        }
+        .folder-card {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #efebe6;
+            transition: 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .folder-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+        }
+        .cover-top {
+            aspect-ratio: 5 / 3;
+            width: 100%;
+            background: #d9d0c4;
+            overflow: hidden;
+            position: relative;
+        }
+        .cover-top img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .cover-top .badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(2px);
+        }
+        .cover-bottom {
+            aspect-ratio: 7 / 3;
+            width: 100%;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 12px;
+            text-align: center;
+            border-top: 1px solid #e8e0d7;
+        }
+        .cover-bottom .title {
+            font-weight: 600;
+            font-size: 1.15rem;
+            line-height: 1.3;
+            margin-bottom: 2px;
+        }
+        .cover-bottom .sub {
+            font-size: 0.85rem;
+            color: #7a6e62;
+        }
+        .cover-bottom .tag {
+            display: inline-block;
+            background: #f0ebe4;
+            padding: 2px 16px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #5b4f43;
+            margin-top: 6px;
+            letter-spacing: 0.4px;
+        }
+
+        /* 投稿 */
+        .submission-box {
+            background: #fff;
+            border-radius: 28px;
+            padding: 44px 48px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
+            border: 1px solid #ece6df;
+            max-width: 680px;
+            margin: 20px 0 10px;
+        }
+        .submission-box h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        .submission-box p {
+            font-size: 1.05rem;
+            color: #3d3d3d;
+            margin-bottom: 24px;
+        }
+        .email-copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #f2ede7;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1e1e1e;
+            transition: 0.2s;
+            border: 1px solid transparent;
+            text-decoration: none;
+            cursor: pointer;
+            user-select: none;
+            font-family: inherit;
+        }
+        .email-copy-btn i {
+            color: #b42b2b;
+            transition: color 0.2s;
+        }
+        .email-copy-btn:hover {
+            background: #e8dfd5;
+            border-color: #b42b2b;
+        }
+        .email-copy-btn.copied {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .email-copy-btn.copied i {
+            color: #28a745;
+        }
+        .submission-meta {
+            margin-top: 28px;
+            color: #6b5f53;
+            font-size: 0.95rem;
+        }
+
+        /* 页脚 */
+        .footer-note {
+            margin-top: 48px;
+            padding-top: 28px;
+            border-top: 1px solid #e8e0d7;
+            text-align: center;
+            color: #8a7e72;
+            font-size: 0.9rem;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 1024px) {
+            .reviews-masonry {
+                column-count: 3;
+                column-gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .reviews-masonry {
+                column-count: 2;
+                column-gap: 18px;
+            }
+            .about-section .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .about-image .img-wrapper {
+                max-width: 280px;
+                margin: 0 auto;
+            }
+            .about-text .big-quote {
+                font-size: 180px;
+                top: -10px;
+                left: -10px;
+            }
+            .quote-section .quote-box {
+                padding: 32px 28px;
+            }
+            .folder-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 28px;
+            }
+            .quote-footer-img .img-wrapper {
+                width: 260px;
+            }
+            .modal-box {
+                padding: 28px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-links {
+                gap: 14px;
+                flex-wrap: wrap;
+                justify-content: center;
+                font-size: 0.85rem;
+            }
+            .reviews-masonry {
+                column-count: 1;
+                column-gap: 0;
+                max-width: 420px;
+                margin: 0 auto;
+            }
+            .review-note {
+                max-height: 300px;
+            }
+            .hero-fullscreen .brand-title {
+                font-size: clamp(2.8rem, 14vw, 4.5rem);
+            }
+            .scroll-hint {
+                bottom: 24px;
+                right: 20px;
+                font-size: 1.2rem;
+            }
+            .about-text {
+                font-size: 0.9rem;
+            }
+            .about-text .big-quote {
+                font-size: 120px;
+                top: -4px;
+                left: -4px;
+            }
+            .quote-section .quote-box {
+                padding: 20px 16px;
+                font-size: 0.92rem;
+            }
+            .quote-section .quote-box .quote-mark {
+                font-size: 2rem;
+            }
+            .folder-grid {
+                grid-template-columns: 1fr;
+                max-width: 360px;
+                margin: 0 auto;
+            }
+            .submission-box {
+                padding: 24px 16px;
+            }
+            .about-section {
+                padding: 40px 0;
+            }
+            .quote-section {
+                padding: 40px 0 60px;
+            }
+            .quote-footer-img .img-wrapper {
+                width: 180px;
+            }
+            .quote-footer-img {
+                margin-top: 40px;
+            }
+            .modal-box {
+                padding: 24px 18px;
+                max-height: 70vh;
+            }
+            .modal-box .modal-content {
+                font-size: 0.92rem;
+            }
+        }
+
+        .modal-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-box::-webkit-scrollbar-track {
+            background: #f0ebe4;
+            border-radius: 4px;
+        }
+        .modal-box::-webkit-scrollbar-thumb {
+            background: #c5b8a8;
+            border-radius: 4px;
+        }
+        .modal-box::-webkit-scrollbar-thumb:hover {
+            background: #b42b2b;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 导航栏 (固定) ===== -->
+    <nav class="navbar" id="mainNav">
+        <div class="container">
+            <div class="logo">The Beijing<span>ren</span></div>
+            <div class="nav-links">
+                <a class="active" data-page="home">首页</a>
+                <a data-page="archive">往期作品</a>
+                <a data-page="submit">投稿地址</a>
+                <a data-page="reviews">读者评语</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- ===== 主内容区 ===== -->
+    <!-- ============================================================ -->
+
+    <!-- ========== 首页 (三屏设计) ========== -->
+    <section id="page-home" class="page-section active">
+        <div class="hero-fullscreen" id="heroFirst">
+            <div class="brand-title">The Beijingren</div>
+            <div class="scroll-hint" onclick="document.getElementById('aboutSection').scrollIntoView({behavior:'smooth'})">
+                <i class="fas fa-chevron-down"></i>
+                <span>Scroll</span>
+            </div>
+        </div>
+
+        <div class="about-section" id="aboutSection">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <div class="big-quote">“</div>
+                        <div class="text-content">
+                            <p>The Beijingren青年文刊组织由北京师范大学附属实验中学国际部学生创始，联合北京鼎石学校、北京四中、人大附中、十一学校、101中学等北京高中一同发行文刊，在北京各校老师和高中生之中征集优秀稿件，公益性印制成册，定期发行。</p>
+                            <p>提及文坛，这个名词似乎永远属于社会和历史上的大家；提及范文，这些文章又仅仅局限于我们周围。而我们对更广范围的同龄人究竟看见了什么，在想什么、写什么、做什么，一无所知。我们希望能在力所能及的范围内，搭建北京学生与老师们文化交流、思想碰撞的自由平台，透过他们的眼睛，看世界的柔情似水，看四周的冷淡苛刻。</p>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="img-wrapper">
+                            <img src="https://s41.ax1x.com/2026/07/28/pmWdswF.jpg" alt="The Beijingren 青年文刊" loading="lazy" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-section">
+            <div class="container">
+                <div class="quote-box">
+                    <p>
+                        <span class="quote-mark">“</span>我们一直支持鲁迅先生的文艺观：我们不要瞒和骗的文艺，而是要讲真话的文学。我们期待听到同龄人最真切的想法和声音。以上一些想法，都是我们创始这份文刊杂志的动机，也是我们创立The Beijingren青年文刊组织的原因。而The Beijingren这个名字则是致敬The New Yorker诞生的一百周年。
+                    </p>
+                    <div class="quote-source">—— The Beijingren 编辑部</div>
+                </div>
+                <div class="quote-footer-img">
+                    <div class="img-wrapper">
+                        <img src="https://s41.ax1x.com/2026/07/28/pmWd4OK.jpg" alt="装饰插图" loading="lazy" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 往期作品 ========== -->
+    <section id="page-archive" class="page-section">
+        <div class="container">
+            <h2 class="section-title">往期作品</h2>
+            <p class="section-sub">透过他们的眼睛，看世界的温柔与苛刻。</p>
+            <div class="folder-grid">
+                <a href="https://s.dps.cn/go/484a2ae38e249fd42506f01a270bd819" target="_blank" class="folder-card">
+                    <div class="cover-top">
+                        <img src="https://s41.ax1x.com/2026/07/28/pmWezZT.jpg" alt="第一期封面" />
+                        <span class="badge">Vol.1</span>
+                    </div>
+                    <div class="cover-bottom">
+                        <div class="title">京华生活</div>
+                        <div class="sub">Issue 01, April 2025</div>
+                        <span class="tag">电子刊</span>
+                    </div>
+                </a>
+                <a href="https://s.dps.cn/go/d336e54d387fa9de9ca693b8e41e45b5" target="_blank" class="folder-card">
+                    <div class="cover-top">
+                        <img src="https://s41.ax1x.com/2026/07/28/pmWmSdU.jpg" alt="第二期封面" />
+                        <span class="badge">Vol.2</span>
+                    </div>
+                    <div class="cover-bottom">
+                        <div class="title">京华哲思</div>
+                        <div class="sub">Issue 02, May 2025</div>
+                        <span class="tag">电子刊</span>
+                    </div>
+                </a>
+                <a href="https://s.dps.cn/go/e4447a180d029b70dae2b5ef266ebf6d" target="_blank" class="folder-card">
+                    <div class="cover-top">
+                        <img src="https://s41.ax1x.com/2026/07/28/pmWmpoF.jpg" alt="第三期封面" />
+                        <span class="badge">Vol.3</span>
+                    </div>
+                    <div class="cover-bottom">
+                        <div class="title">京华出游</div>
+                        <div class="sub">Issue 03, June 2025</div>
+                        <span class="tag">电子刊</span>
+                    </div>
+                </a>
+                <a href="https://s.dps.cn/go/d84f0024cb6c5fc975328ae6613ef59c" target="_blank" class="folder-card">
+                    <div class="cover-top">
+                        <img src="https://s41.ax1x.com/2026/07/28/pmWmCi4.jpg" alt="第四期封面" />
+                        <span class="badge">Vol.4</span>
+                    </div>
+                    <div class="cover-bottom">
+                        <div class="title">暑期·京华夏悟</div>
+                        <div class="sub">Issue 04, Summer 2025</div>
+                        <span class="tag">电子刊</span>
+                    </div>
+                </a>
+            </div>
+            <p style="margin-top: 32px; color: #6b5f53; font-size: 0.95rem;">
+                <i class="fas fa-arrow-right" style="color:#b42b2b;"></i> 点击卡片跳转至对应文刊
+            </p>
+        </div>
+    </section>
+
+    <!-- ========== 投稿链接（点击复制邮箱） ========== -->
+    <section id="page-submit" class="page-section">
+        <div class="container">
+            <div class="submission-box">
+                <h2>投稿地址</h2>
+                <p>
+                    我们长期征集任何优秀文字、摄影及插画作品。
+                    不限体裁，也不限主题和内容，更不限语言，只求真诚的表达。
+                </p>
+                <button class="email-copy-btn" id="copyEmailBtn" data-email="typewritersy@163.com">
+                    <i class="fas fa-envelope"></i>
+                    <span id="emailText">typewritersy@163.com</span>
+                </button>
+                <div class="submission-meta">
+                    <i class="fas fa-clock" style="margin-right: 6px;"></i>
+                    PS：投稿时请备注作品名与作者名，后者可用笔名。
+                </div>
+                <div style="margin-top: 20px; font-size: 0.9rem; color: #7a6e62; border-top: 1px dashed #ddd; padding-top: 20px;">
+                    <i class="fas fa-info-circle" style="color:#b42b2b;"></i>
+                    投稿即视为同意《The Beijingren》编辑团队对作品进行非商业性展示与推广。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 读者评语 · 四列瀑布流 纸条风格 ========== -->
+    <section id="page-reviews" class="page-section">
+        <div class="container">
+            <div class="reviews-section">
+                <h2 class="section-title">读者评语</h2>
+                <p class="section-sub">来自读者们的真实声音</p>
+
+                <div class="reviews-masonry" id="reviewsMasonry">
+                    <!-- 评语 1：北京四中 S同学（长评语） -->
+                    <div class="review-note is-long" data-fulltext="高一下一学期中，我参与了京华校园刊文集的投稿和稿件编辑工作。最初，我是作为一个投稿人的身份参与进本刊物的创编的。与这一刊物初识于实验公众号，初中时我将实验作为自己的目标校，但最终去了四中，在升入高中后也在时不时的关注实验的公众号。这段与刊物的相识也算是我与实验缘分的再续吧，所以虽然当时四中也有同样类型的校刊，但我还是将稿件投往了这里。
+
+当时意外的是有好几篇稿件都入选了，因为稿费结算加了主编的微信，通过聊天得知办刊初衷是想为学生提供一个更加自由的平台来表达自己，而校刊的平台太过正式，更像是学校的思想输出。当时也觉得这位主编是很有想法，也很有理想情怀。恰巧，有一位编辑人员退出了稿件编辑工作，我也希望可以参与到稿件编辑中来，于是加入了刊物编辑群。虽然最终由于技术和时间等原因并没有对本刊的创编和出刊作出很大的贡献，但仍觉得这是一段不俗的经历，这也是一件很有意义的事情。
+
+想说明，本刊的主编是实验国际部的一位高二学生，原先本以为是有学校经费和赞助的，当初得知稿费都是由他用自己的奖学金结算时我感到很震惊。一方面，一位高二学生能有这种为一个算得上事业的东西付出自己的奖学金不是一件容易的事情，她是一个有理想有情怀的人。另一方面，他能有这样办刊的想法，说明看到了校刊存在的一些问题，能一直持续地把这个刊物办下去，期间出刊四次，这不仅需要独到的眼光，也需要不俗的领导力，很佩服这位学姐，希望这段经历可以为你未来的求学路积累财富。">
+                        <div class="review-author">北京四中 <span class="school">S同学</span></div>
+                        <div class="review-content">
+                            高一下一学期中，我参与了京华校园刊文集的投稿和稿件编辑工作。最初，我是作为一个投稿人的身份参与进本刊物的创编的。与这一刊物初识于实验公众号，初中时我将实验作为自己的目标校，但最终去了四中，在升入高中后也在时不时的关注实验的公众号。这段与刊物的相识也算是我与实验缘分的再续吧，所以虽然当时四中也有同样类型的校刊，但我还是将稿件投往了这里。
+                            <br /><br />
+                            当时意外的是有好几篇稿件都入选了，因为稿费结算加了主编的微信，通过聊天得知办刊初衷是想为学生提供一个更加自由的平台来表达自己，而校刊的平台太过正式，更像是学校的思想输出。当时也觉得这位主编是很有想法，也很有理想情怀。恰巧，有一位编辑人员退出了稿件编辑工作，我也希望可以参与到稿件编辑中来，于是加入了刊物编辑群。虽然最终由于技术和时间等原因并没有对本刊的创编和出刊作出很大的贡献，但仍觉得这是一段不俗的经历，这也是一件很有意义的事情。
+                            <br /><br />
+                            想说明，本刊的主编是实验国际部的一位高二学生，原先本以为是有学校经费和赞助的，当初得知稿费都是由他用自己的奖学金结算时我感到很震惊。一方面，一位高二学生能有这种为一个算得上事业的东西付出自己的奖学金不是一件容易的事情，她是一个有理想有情怀的人。另一方面，他能有这样办刊的想法，说明看到了校刊存在的一些问题，能一直持续地把这个刊物办下去，期间出刊四次，这不仅需要独到的眼光，也需要不俗的领导力，很佩服这位学姐，希望这段经历可以为你未来的求学路积累财富。
+                        </div>
+                        <div class="note-fade"></div>
+                    </div>
+
+                    <!-- 评语 2：赞助商（短评语） -->
+                    <div class="review-note" data-fulltext="赞助商：我们觉得这很有意义，这个时代需要这样的人文关怀。">
+                        <div class="review-author">赞助商</div>
+                        <div class="review-content">我们觉得这很有意义，这个时代需要这样的人文关怀。</div>
+                    </div>
+
+                    <!-- ===== 新增评语 3：某校文学社前任社长（长评语） ===== -->
+                    <div class="review-note is-long" data-fulltext="还记得高一的时候，第一次听朋友提起'北京人'。
+那时候听说是实验国际部的学姐拿自己奖学金办的，在各个高中找编辑拉稿源，当时便欣喜非常。
+恰好手头有几片存稿，就让朋友帮我投了进去，没想到其中几篇还真被选上。
+从那之后一连几刊，我都坚持投稿，也从来没有错过刊物的发行。
+
+我还记得那个明媚的下午，我和朋友放学后直奔实验国际部，去拿印好的刊物，翻开目录，看见我名字时那种特殊的感觉。
+
+后来很长一段时间，听说北京人经费不足，难以为继。
+我估计这么一本刊物肯定是办不下去了，深感可惜。
+结果没想到，前几天朋友发给我一个链接，赫然是以网页版重生了的北京人。
+我当时感到很惊喜，同时也有对那些素未谋面的刊物核心成员的钦佩。
+
+作为我自己学校文学社的前任社长，我能想象组织这样一本刊物的艰难：跨校人员的组织与联系、稿件的征集审议和修改、多少万字的排版与校对、起步阶段就面临的经费不足……更别提还有作为学生本身的学习压力。
+而能够克服这样种种困难，全然自发地维持着北京人的运转，这些编辑们真的值得敬佩。
+
+当下社会，人们普遍是浮躁的。
+一件事情如果从功利角度讲无关于大体，而且开头不顺，那么它大概率不会被坚持下来。
+然而北京人这样一本刊物，严格来说确实无关于任何人的世俗利益，而且开头不顺，但是它被坚持了下来。
+这是因为有一群人觉得，这件事情值得。
+我想这份坚持，一定是出于某种精神的信仰，一定是出于对写作的热爱。
+
+我认为人是为了表达而写作的，我们思维的闪光、情感的激荡，往往见诸文字。
+写作这种记录让思想变得更有价值。
+而我们之所以阅读，也是为了倾听其他人的表达。
+北京人作为这样一本'民间'刊物，是当下新大众文学现象的一个典例。
+它为我们提供了一个很好的表达与交流的平台；
+它让一个个青年人因思想和热爱而成为同路人；
+它包容我们真实的声音，给予我们认可，也鼓励我们在写作的道路上继续前行。
+这大概是人文精神的一种体现。
+
+在一个充满了嘈杂的社会中，希望北京人能够渐渐成长为一个清醒而坚定的声音，并且，长久喧响。">
+                        <div class="review-author">某校文学社前任社长</div>
+                        <div class="review-content">
+                            还记得高一的时候，第一次听朋友提起"北京人"。<br /><br />
+                            那时候听说是实验国际部的学姐拿自己奖学金办的，在各个高中找编辑拉稿源，当时便欣喜非常。<br />
+                            恰好手头有几片存稿，就让朋友帮我投了进去，没想到其中几篇还真被选上。<br />
+                            从那之后一连几刊，我都坚持投稿，也从来没有错过刊物的发行。<br /><br />
+                            我还记得那个明媚的下午，我和朋友放学后直奔实验国际部，去拿印好的刊物，翻开目录，看见我名字时那种特殊的感觉。<br /><br />
+                            后来很长一段时间，听说北京人经费不足，难以为继。<br />
+                            我估计这么一本刊物肯定是办不下去了，深感可惜。<br />
+                            结果没想到，前几天朋友发给我一个链接，赫然是以网页版重生了的北京人。<br />
+                            我当时感到很惊喜，同时也有对那些素未谋面的刊物核心成员的钦佩。<br /><br />
+                            作为我自己学校文学社的前任社长，我能想象组织这样一本刊物的艰难：跨校人员的组织与联系、稿件的征集审议和修改、多少万字的排版与校对、起步阶段就面临的经费不足……更别提还有作为学生本身的学习压力。<br />
+                            而能够克服这样种种困难，全然自发地维持着北京人的运转，这些编辑们真的值得敬佩。<br /><br />
+                            当下社会，人们普遍是浮躁的。<br />
+                            一件事情如果从功利角度讲无关于大体，而且开头不顺，那么它大概率不会被坚持下来。<br />
+                            然而北京人这样一本刊物，严格来说确实无关于任何人的世俗利益，而且开头不顺，但是它被坚持了下来。<br />
+                            这是因为有一群人觉得，这件事情值得。<br />
+                            我想这份坚持，一定是出于某种精神的信仰，一定是出于对写作的热爱。<br /><br />
+                            我认为人是为了表达而写作的，我们思维的闪光、情感的激荡，往往见诸文字。<br />
+                            写作这种记录让思想变得更有价值。<br />
+                            而我们之所以阅读，也是为了倾听其他人的表达。<br />
+                            北京人作为这样一本"民间"刊物，是当下新大众文学现象的一个典例。<br />
+                            它为我们提供了一个很好的表达与交流的平台；<br />
+                            它让一个个青年人因思想和热爱而成为同路人；<br />
+                            它包容我们真实的声音，给予我们认可，也鼓励我们在写作的道路上继续前行。<br />
+                            这大概是人文精神的一种体现。<br /><br />
+                            在一个充满了嘈杂的社会中，希望北京人能够渐渐成长为一个清醒而坚定的声音，并且，长久喧响。
+                        </div>
+                        <div class="note-fade"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <div class="container">
+        <div class="footer-note">
+            <i class="fas fa-book-open" style="margin-right: 6px;"></i>
+            The Beijingren · 独立文刊 · 持续更新
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== 模态框（弹窗查看完整评语） ===== -->
+    <!-- ============================================================ -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal-box">
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <div class="modal-author" id="modalAuthor">作者</div>
+            <div class="modal-content" id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== JavaScript：页面切换 + 复制邮箱 + 评语弹窗 ===== -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            // ---- 页面切换逻辑 ----
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const navbar = document.getElementById('mainNav');
+            const sections = {
+                home: document.getElementById('page-home'),
+                archive: document.getElementById('page-archive'),
+                submit: document.getElementById('page-submit'),
+                reviews: document.getElementById('page-reviews')
+            };
+            const heroFirst = document.getElementById('heroFirst');
+
+            function switchPage(pageId) {
+                Object.keys(sections).forEach(key => {
+                    sections[key].classList.remove('active');
+                });
+                if (sections[pageId]) {
+                    sections[pageId].classList.add('active');
+                }
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.page === pageId) {
+                        link.classList.add('active');
+                    }
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                updateNavbar();
+            }
+
+            function updateNavbar() {
+                const activeSection = document.querySelector('.page-section.active');
+                const isHome = activeSection && activeSection.id === 'page-home';
+                if (isHome) {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const heroHeight = heroFirst ? heroFirst.offsetHeight : 0;
+                    if (scrollY < heroHeight - 80) {
+                        navbar.classList.remove('scrolled');
+                    } else {
+                        navbar.classList.add('scrolled');
+                    }
+                } else {
+                    navbar.classList.add('scrolled');
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.dataset.page;
+                    if (page && sections[page]) {
+                        switchPage(page);
+                        history.pushState(null, '', '#' + page);
+                    }
+                });
+            });
+
+            window.addEventListener('scroll', function() {
+                const activeSection = document.querySelector('.page-section.active');
+                if (activeSection && activeSection.id === 'page-home') {
+                    updateNavbar();
+                }
+            });
+
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    updateNavbar();
+                }, 100);
+            });
+
+            window.addEventListener('hashchange', function() {
+                const hash = window.location.hash.replace('#', '');
+                if (hash && sections[hash]) {
+                    switchPage(hash);
+                } else {
+                    switchPage('home');
+                }
+            });
+
+            const initHash = window.location.hash.replace('#', '');
+            if (initHash && sections[initHash]) {
+                switchPage(initHash);
+            } else {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.page === 'home') link.classList.add('active');
+                });
+                Object.keys(sections).forEach(key => {
+                    sections[key].classList.remove('active');
+                });
+                sections.home.classList.add('active');
+                navbar.classList.remove('scrolled');
+                setTimeout(updateNavbar, 50);
+            }
+
+            window.addEventListener('orientationchange', function() {
+                setTimeout(updateNavbar, 300);
+            });
+
+            // ---- 复制邮箱功能 ----
+            const copyBtn = document.getElementById('copyEmailBtn');
+            if (copyBtn) {
+                const emailSpan = document.getElementById('emailText');
+                const originalText = emailSpan.textContent;
+
+                copyBtn.addEventListener('click', function() {
+                    const email = this.dataset.email;
+                    if (!email) return;
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(email).then(() => {
+                            showCopiedFeedback();
+                        }).catch(() => {
+                            fallbackCopy(email);
+                        });
+                    } else {
+                        fallbackCopy(email);
+                    }
+                });
+
+                function fallbackCopy(text) {
+                    const input = document.createElement('input');
+                    input.value = text;
+                    document.body.appendChild(input);
+                    input.select();
+                    try {
+                        document.execCommand('copy');
+                        showCopiedFeedback();
+                    } catch (err) {
+                        alert('复制失败，请手动复制邮箱：' + text);
+                    }
+                    document.body.removeChild(input);
+                }
+
+                let feedbackTimer = null;
+
+                function showCopiedFeedback() {
+                    if (feedbackTimer) {
+                        clearTimeout(feedbackTimer);
+                        feedbackTimer = null;
+                    }
+                    copyBtn.classList.add('copied');
+                    emailSpan.textContent = '已复制！';
+                    feedbackTimer = setTimeout(() => {
+                        copyBtn.classList.remove('copied');
+                        emailSpan.textContent = originalText;
+                        feedbackTimer = null;
+                    }, 2500);
+                }
+            }
+
+            // ---- 读者评语 · 点击纸条弹窗查看完整内容 ----
+            const modal = document.getElementById('reviewModal');
+            const modalAuthor = document.getElementById('modalAuthor');
+            const modalContent = document.getElementById('modalContent');
+            const modalClose = document.getElementById('modalCloseBtn');
+            const reviewNotes = document.querySelectorAll('.review-note');
+
+            // 打开弹窗（支持 \n 换行）
+            function openModal(authorText, fullText) {
+                modalAuthor.textContent = authorText;
+                // 如果文本中包含 \n（在 HTML 属性中为 \\n），则替换为 <br /> 并使用 innerHTML
+                if (fullText && fullText.includes('\\n')) {
+                    modalContent.innerHTML = fullText.replace(/\\n/g, '<br />');
+                } else {
+                    modalContent.textContent = fullText || '（内容为空）';
+                }
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // 关闭弹窗
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // 点击纸条 → 打开弹窗
+            reviewNotes.forEach(function(note) {
+                note.addEventListener('click', function() {
+                    const authorEl = this.querySelector('.review-author');
+                    let authorText = authorEl ? authorEl.textContent.trim() : '读者';
+                    let fullText = this.dataset.fulltext || '';
+                    if (!fullText) {
+                        const contentEl = this.querySelector('.review-content');
+                        if (contentEl) {
+                            fullText = contentEl.textContent.trim();
+                        }
+                    }
+                    openModal(authorText, fullText);
+                });
+            });
+
+            // 点击关闭按钮
+            modalClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeModal();
+            });
+
+            // 点击背景遮罩关闭
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            // ESC 键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            // ---- 自动检测长评语，添加 is-long 类 ----
+            reviewNotes.forEach(function(note) {
+                const contentEl = note.querySelector('.review-content');
+                if (contentEl) {
+                    const textLength = contentEl.textContent.length;
+                    if (textLength > 150) {
+                        note.classList.add('is-long');
+                    }
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
